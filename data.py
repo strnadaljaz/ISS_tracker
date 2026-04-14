@@ -1,6 +1,8 @@
 from skyfield.api import load
 from zoneinfo import ZoneInfo
 from datetime import timedelta
+from dotenv import load_dotenv
+import os
 
 # Gets when ISS could be visible from location 
 # you specify in time window from now to 24 hours later.
@@ -28,7 +30,7 @@ def getData(dataUrl: str, timeSystem, location):
     localTimes = []
 
     for t in times:
-        localTime = t.utc_datetime().astimezone(ZoneInfo("Europe/Ljubljana"))
+        localTime = t.utc_datetime().astimezone(ZoneInfo(os.getenv("TIMEZONE")))
         localTimes.append(localTime)
 
     return localTimes, events

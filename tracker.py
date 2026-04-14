@@ -3,7 +3,7 @@ import time
 from data import getData
 from colorama import Fore, Style, init
 import os
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 
 init()
 load_dotenv()
