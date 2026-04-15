@@ -1,20 +1,24 @@
-from skyfield.api import load
+from skyfield.api import load, wgs84
 from zoneinfo import ZoneInfo
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
+# loads satellites data from url and 
+# searches for ISS and returns it
+def getIss():
+    satellites = load.tle_file('http://celestrak.org/NORAD/elements/stations.txt')
+    by_name = {sat.name: sat for sat in satellites}
+    iss = by_name['ISS (ZARYA)']
+
+    return iss
+
 # Gets when ISS could be visible from location 
 # you specify in time window from now to 24 hours later.
 # Doesn't take into account the weather conditions and 
 # sun position
-def getData(dataUrl: str, timeSystem, location):
-    
-    # loads satellites data from url and 
-    # searches for ISS
-    satellites = load.tle_file(dataUrl)
-    by_name = {sat.name: sat for sat in satellites}
-    iss = by_name['ISS (ZARYA)']
+def getVisibleTimes(dataUrl: str, timeSystem, location):
+    iss = getIss() 
 
     # Current time and time 24 hours later
     t0 = timeSystem.now()
@@ -34,3 +38,10 @@ def getData(dataUrl: str, timeSystem, location):
         localTimes.append(localTime)
 
     return localTimes, events
+
+def isIssInSunlight(time):
+    eph = load('de421.bsp')
+    iss = getIss()
+    sunlit = iss.at(time).is_sunlit(eph) 
+
+    return sunlit

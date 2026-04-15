@@ -1,6 +1,6 @@
 from skyfield.api import load, wgs84
 import time
-from data import getData
+from data import getVisibleTimes, getSunAltitude 
 from colorama import Fore, Style, init
 import os
 from dotenv import load_dotenv
@@ -18,8 +18,9 @@ url = 'http://celestrak.org/NORAD/elements/stations.txt'
 
 timeSystem = load.timescale()
 
-localTimes, events = getData(url, timeSystem, myPosition)
+localTimes, events = getVisibleTimes(url, timeSystem, myPosition)
 
+'''
 for i in range(len(localTimes)):
     
     if events[i] == 0:
@@ -28,7 +29,7 @@ for i in range(len(localTimes)):
         print(Fore.GREEN + "Ideal:" + str(localTimes[i]))
     else:
         print(Fore.RED + "End:" + str(localTimes[i]))
-
+'''
 '''
 while (True):
     if gotData:
