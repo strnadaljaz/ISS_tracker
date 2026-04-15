@@ -1,4 +1,5 @@
-from skyfield.api import load, wgs84
+from skyfield.api import load, wgs84, Timescale
+from skyfield.toposlib import GeographicPosition
 from zoneinfo import ZoneInfo
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -17,7 +18,7 @@ def getIss():
 # you specify in time window from now to 24 hours later.
 # Doesn't take into account the weather conditions and 
 # sun position
-def getVisibleTimes(dataUrl: str, timeSystem, location):
+def getVisibleTimes(dataUrl: str, timeSystem: Timescale, location: GeographicPosition):
     iss = getIss() 
 
     # Current time and time 24 hours later

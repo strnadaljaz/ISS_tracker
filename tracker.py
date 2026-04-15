@@ -20,6 +20,8 @@ timeSystem = load.timescale()
 
 localTimes, events = getVisibleTimes(url, timeSystem, myPosition)
 
+getSunAltitude("", "")
+
 '''
 for i in range(len(localTimes)):
     
