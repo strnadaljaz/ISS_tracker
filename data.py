@@ -1,13 +1,19 @@
-from skyfield.api import load, wgs84, Timescale
+from skyfield.api import load, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
+from skyfield.sgp4lib import EarthSatellite
+from skyfield.timelib import Time
+from skyfield import almanac
 from zoneinfo import ZoneInfo
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+from datetime import datetime
+
+eph = load('de421.bsp')
 
 # loads satellites data from url and 
 # searches for ISS and returns it
-def getIss():
+def getIss() -> EarthSatellite:
     satellites = load.tle_file('http://celestrak.org/NORAD/elements/stations.txt')
     by_name = {sat.name: sat for sat in satellites}
     iss = by_name['ISS (ZARYA)']
@@ -18,7 +24,7 @@ def getIss():
 # you specify in time window from now to 24 hours later.
 # Doesn't take into account the weather conditions and 
 # sun position
-def getVisibleTimes(dataUrl: str, timeSystem: Timescale, location: GeographicPosition):
+def getVisibleTimes(dataUrl: str, timeSystem: Timescale, location: GeographicPosition) -> tuple[list[datetime], list[int], list[Time]]:
     iss = getIss() 
 
     # Current time and time 24 hours later
@@ -38,9 +44,31 @@ def getVisibleTimes(dataUrl: str, timeSystem: Timescale, location: GeographicPos
         localTime = t.utc_datetime().astimezone(ZoneInfo(os.getenv("TIMEZONE")))
         localTimes.append(localTime)
 
-    return localTimes, events
+    # We also remove utc times, because we need them 
+    # for further calculations, like Sun altitude
+    return localTimes, events, times
 
-def isIssInSunlight(time):
+# Function returns sun altitude (in degrees as a float) on specified time from
+# specified location 
+def getSunAltitude(time: Time, location: GeographicPosition) -> float:
+    # Get sun and earth position in space
+    sun = eph['sun']
+    earth = eph['earth']
+
+    # Combine earth with location specified
+    earthAtLocation = earth + location
+
+    # Calculate sun position from specified location
+    sunPos = earthAtLocation.at(time).observe(sun).apparent()
+
+    # Calculate altitude in degrees, horizontal direction (azimuth) in degrees
+    # and distance from location to sun. Azimuth and distance is not needed
+    # at the moment, but in the future of this project, they will be very useful 
+    altitude, azimuth, distance = sunPos.altaz()
+
+    return altitude.degrees
+
+def isIssInSunlight(time: Time) -> bool:
     eph = load('de421.bsp')
     iss = getIss()
     sunlit = iss.at(time).is_sunlit(eph) 

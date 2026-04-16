@@ -18,9 +18,11 @@ url = 'http://celestrak.org/NORAD/elements/stations.txt'
 
 timeSystem = load.timescale()
 
-localTimes, events = getVisibleTimes(url, timeSystem, myPosition)
+localTimes, events, times = getVisibleTimes(url, timeSystem, myPosition)
 
-getSunAltitude("", "")
+for i in range(len(times)):
+    altitude = getSunAltitude(times[i], myPosition)
+    print(f"{localTimes[i]}, {altitude}")
 
 '''
 for i in range(len(localTimes)):
