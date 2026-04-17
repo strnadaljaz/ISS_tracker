@@ -68,6 +68,7 @@ def getSunAltitude(time: Time, location: GeographicPosition) -> float:
 
     return altitude.degrees
 
+# Returns true if is ISS in sunlight, else returns false
 def isIssInSunlight(time: Time) -> bool:
     eph = load('de421.bsp')
     iss = getIss()
