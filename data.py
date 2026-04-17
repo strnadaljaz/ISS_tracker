@@ -1,11 +1,9 @@
-from skyfield.api import load, Timescale, wgs84
+from skyfield.api import load, Timescale
 from skyfield.toposlib import GeographicPosition
 from skyfield.sgp4lib import EarthSatellite
 from skyfield.timelib import Time
-from skyfield import almanac
 from zoneinfo import ZoneInfo
 from datetime import timedelta
-from dotenv import load_dotenv
 import os
 from datetime import datetime
 
