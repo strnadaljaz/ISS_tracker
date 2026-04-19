@@ -5,14 +5,17 @@ I also want to build small home station, which will receive data from my server 
 # 2. Features
 Current project features (already implemented):
 - Get times when ISS will be visible (start time, optimal time and end time) for 24 hours ahead
-- App doesn't yet take into account the position of the sun, which is very important (you can't see ISS if it's sunny outside)
-- Script converts UTC time of visibility to my local time.
+- Then check for each time two conditions: 
+    - Is sun under the horizon (it's altitude is < 0 degrees)
+    - ISS is sunlit
+- Times, for which are all conditions met, are then sent to my *Telegram* account with usage of their bot.
 
 # 3. Requirements
 Pip packages app uses:
 - skyfield
 - colorama
 - dotenv
+- requests
 
 # 4. Installation
 - Clone repo
@@ -29,21 +32,26 @@ source venv/bin/activate
 
 - Install dependencies
 ```bash
-pip install skyfield colorama python-dotenv
+pip install -r requirements.txt
 ```
 
 # 5. Usage
 - Run script
 ```bash
-python3 tracker.py
+python3 main.py
 ```
 
 # 6. Configuration
-If you want to set your location, you need to create a *.env* file, in which you put four variables:
+If you want to run it yourself, you need to create a *.env* file, in which you put six variables:
 - LATITUDE (your location latitude)
 - LONGITUDE (your location longitude)
-- ELEVATION (your elevation)
+- ELEVATION (your elevation) and
 - TIMEZONE (your timezone, for example "Europe/Ljubljana")
 
+For Telegram bot purposes you also need to set (how to get them go look at their documentation): 
+- BOT_API and
+- CHAT_ID
+
 # 7. Credits
-Thanks to Skyfield for an amazing library! Without them, this project would be a lot harder
+Thanks to Skyfield for an amazing library! Without them, this project would be a lot harder.
+Also thanks goes to Telegram for their free chat bot.
