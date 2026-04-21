@@ -2,3 +2,4 @@ skyfield
 colorama
 dotenv
 requests
+fastapi
