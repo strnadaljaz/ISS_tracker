@@ -46,6 +46,15 @@ def getVisibleTimes(dataUrl: str, timeSystem: Timescale, location: GeographicPos
     # for further calculations, like Sun altitude
     return localTimes, events, times
 
+# Function that calculates data that is sent to ESP32 module
+def getIssAltitudeAndAzimuth(time: Time, location: GeographicPosition) -> tuple [float, float]:
+    iss = getIss()
+    difference = iss - location
+    topocentric = difference.at(time)
+    altitude, azimuth, distance = topocentric.altaz()
+
+    return altitude.degrees, azimuth.degrees
+
 # Function returns sun altitude (in degrees as a float) on specified time from
 # specified location 
 def getSunAltitude(time: Time, location: GeographicPosition) -> float:
