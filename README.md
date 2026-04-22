@@ -9,6 +9,7 @@ Current project features (already implemented):
     - Is sun under the horizon (it's altitude is < 0 degrees)
     - ISS is sunlit
 - Times, for which are all conditions met, are then sent to my *Telegram* account with usage of their bot.
+- Script that waits for a http request and sends back ISS altitude and azimuth in degrees
 
 # 3. Requirements
 Pip packages app uses:
@@ -16,6 +17,7 @@ Pip packages app uses:
 - colorama
 - dotenv
 - requests
+- fastapi
 
 # 4. Installation
 - Clone repo
@@ -39,6 +41,10 @@ pip install -r requirements.txt
 - Run script
 ```bash
 python3 main.py
+```
+- Calculations for ESP32 module
+```bash
+python3 tracker.py
 ```
 
 # 6. Configuration
