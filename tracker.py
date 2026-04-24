@@ -17,15 +17,17 @@ myPosition = wgs84.latlon(LAT, LON, ELEV)
 
 timeSystem = load.timescale()
 
+print("Server alert")
+
 # Wait for the request from module esp32
 @app.get("/iss")
 def sendDataToModule():
     # Current time
     timeNow = timeSystem.now()
-
+    print("Got request")
     # Altitude and azimuth
     alt, az = getIssAltitudeAndAzimuth(timeNow, myPosition)
-    
+    print(alt) 
     # If ISS is under horizon, we don't send data
     if alt < 0: 
         return {

@@ -3,3 +3,4 @@ colorama
 dotenv
 requests
 fastapi
+uvicorn
