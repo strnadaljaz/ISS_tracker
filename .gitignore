@@ -1,1 +1,9 @@
 .env
+__pycache__
+venv
+*.bsp
+stations.txt
+de421.bsp
+.vscode
+Arduino/.vscode
+Arduino/.pio
