@@ -7,3 +7,4 @@ de421.bsp
 .vscode
 Arduino/.vscode
 Arduino/.pio
+Arduino/include/secrets.h

@@ -10,6 +10,7 @@ Current project features (already implemented):
     - ISS is sunlit
 - Times, for which are all conditions met, are then sent to my *Telegram* account with usage of their bot.
 - Script that waits for a http request and sends back ISS altitude and azimuth in degrees
+- ESP32 module script that connects to the WiFi and retrieves data from server. With that data, it than controls two servo motors (one for azimuth and one for altitute)
 
 # 3. Requirements
 Pip packages app uses:
@@ -18,6 +19,7 @@ Pip packages app uses:
 - dotenv
 - requests
 - fastapi
+- uvicorn
 
 # 4. Installation
 - Clone repo
@@ -44,7 +46,7 @@ python3 main.py
 ```
 - Calculations for ESP32 module
 ```bash
-python3 tracker.py
+uvicorn tracker:app --host 0.0.0.0 --port 8000
 ```
 
 # 6. Configuration
@@ -57,6 +59,15 @@ If you want to run it yourself, you need to create a *.env* file, in which you p
 For Telegram bot purposes you also need to set (how to get them go look at their documentation): 
 - BOT_API and
 - CHAT_ID
+
+If you want to run tracking with ESP32 chip, you need to create a file *secrets.h* in *Arduino/include/*. Post code below into that file:
+```cpp
+#pragma once
+
+#define WIFI_SSID <YOUR NETWORK SSID>
+#define WIFI_PASS <YOUR NETWORK PASSWORD>
+#define HOST <SERVER HOSTNAME (can be ip)>
+```
 
 # 7. Credits
 Thanks to Skyfield for an amazing library! Without them, this project would be a lot harder.
