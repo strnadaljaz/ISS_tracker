@@ -27,7 +27,13 @@ def sendDataToModule():
     print("Got request")
     # Altitude and azimuth
     alt, az = getIssAltitudeAndAzimuth(timeNow, myPosition)
-    print(alt) 
+
+    alt = int(round(alt, 0))
+    az = int(round(az, 0))
+    
+    print("Altitude:", alt)
+    print("Azimuth:", az)
+    
     # If ISS is under horizon, we don't send data
     if alt < 0: 
         return {
