@@ -30,6 +30,12 @@ def sendDataToModule():
 
     alt = int(round(alt, 0))
     az = int(round(az, 0))
+
+    if (alt > 180):
+        alt -= 180
+        print("Jug")
+    else:
+        print("Sever")
     
     print("Altitude:", alt)
     print("Azimuth:", az)
