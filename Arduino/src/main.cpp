@@ -3,8 +3,9 @@
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include <ArduinoJson.h>
-#include "secrets.h"
 #include <string>
+#include "secrets.h"
+#include "WriteSmooth.h"
 
 bool getAltitudeAzimuthFromServer(int& altitude, int& azimuth);
 
@@ -19,6 +20,9 @@ const std::string pathName = "/iss";
 std::string url = host + ":8000" + pathName; 
 
 HTTPClient http;
+
+int altitudeServoOld = 90;
+int azimuthServoOld = 90;
 
 void setup() {
   Serial.begin(115200);
@@ -39,14 +43,12 @@ void setup() {
   altitudeServo.attach(33);   
   azimuthServo.attach(14);
 
-  altitudeServo.write(0);
-  delay(500);
-  altitudeServo.write(180);
-  delay(500);
-  azimuthServo.write(0);
-  delay(500);
-  azimuthServo.write(180);
-  delay(500);
+  // zacetni calibration
+  altitudeServoOld = WriteSmooth(altitudeServo, altitudeServoOld, 180);
+  altitudeServoOld = WriteSmooth(altitudeServo, altitudeServoOld, 0);
+
+  azimuthServoOld = WriteSmooth(azimuthServo, azimuthServoOld, 180); 
+  azimuthServoOld = WriteSmooth(azimuthServo, azimuthServoOld, 0);
 }
 
 void loop() {
@@ -56,12 +58,13 @@ void loop() {
   isVisible = getAltitudeAzimuthFromServer(altitude, azimuth);
 
   if (isVisible) {
-    altitudeServo.write(90 + altitude);
-    azimuthServo.write(azimuth);
+    int altitudeToWrite = 90 + altitude;
+    altitudeServoOld = WriteSmooth(altitudeServo, altitudeServoOld, altitudeToWrite);
+    azimuthServoOld = WriteSmooth(azimuthServo, azimuthServoOld, azimuth);
   }
   else {
-    altitudeServo.write(90);
-    azimuthServo.write(90);
+    altitudeServoOld = WriteSmooth(altitudeServo, altitudeServoOld, 90); 
+    azimuthServoOld = WriteSmooth(azimuthServo, azimuthServoOld, 90); 
   }
   delay(1000);
 }
@@ -85,10 +88,12 @@ bool getAltitudeAzimuthFromServer(int& altitude, int& azimuth) {
       altitude = doc["el"];
       isVisible = doc["visible"];
     }
-  }
+  } 
 
-  if (azimuth > 180)
-    azimuth -= 180;
+  else {
+    String error = http.errorToString(httpCode);
+    Serial.print("HTTP error: " + error);
+  }
 
   http.end();
 
