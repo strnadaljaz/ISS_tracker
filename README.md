@@ -11,6 +11,7 @@ Current project features (already implemented):
 - Times, for which are all conditions met, are then sent to my *Telegram* account with usage of their bot.
 - Script that waits for a http request and sends back ISS altitude and azimuth in degrees
 - ESP32 module script that connects to the WiFi and retrieves data from server. With that data, it than controls two servo motors (one for azimuth and one for altitute)
+- **_NOTE:_ Script doesn't take weather into account. If it's cloudy, the ISS may not be visible because it could be behind the clouds.**
 
 # 3. Requirements
 Pip packages app uses:
