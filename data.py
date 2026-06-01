@@ -12,7 +12,7 @@ eph = load('de421.bsp')
 # loads satellites data from url and 
 # searches for ISS and returns it
 def getIss() -> EarthSatellite:
-    satellites = load.tle_file('http://celestrak.org/NORAD/elements/stations.txt')
+    satellites = load.tle_file('https://celestrak.org/NORAD/elements/gp.php?GROUP=stations&FORMAT=tle')
     by_name = {sat.name: sat for sat in satellites}
     iss = by_name['ISS (ZARYA)']
 
