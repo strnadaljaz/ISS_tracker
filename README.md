@@ -43,6 +43,7 @@ pip install -r requirements.txt
 # 5. Circuit
 On the picture bellow, you can see electric circuit for this project. Components that you will need are: ESP32 chip, 2 servo motors, breadboard, some wires, 5V power supply. 
 ![](circuit.png)
+Green servo is altitude servo, purple is azimuth servo.
 
 # 6. Usage
 - Run script
