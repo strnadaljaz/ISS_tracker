@@ -40,7 +40,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# 5. Usage
+# 5. Circuit
+On the picture bellow, you can see electric circuit for this project. Components that you will need are: ESP32 chip, 2 servo motors, breadboard, some wires, 5V power supply. 
+![](circuit.png)
+
+# 6. Usage
 - Run script
 ```bash
 python3 main.py
@@ -50,7 +54,7 @@ python3 main.py
 uvicorn tracker:app --host 0.0.0.0 --port 8000
 ```
 
-# 6. Configuration
+# 7. Configuration
 If you want to run it yourself, you need to create a *.env* file, in which you put six variables:
 - LATITUDE (your location latitude)
 - LONGITUDE (your location longitude)
@@ -70,6 +74,6 @@ If you want to run tracking with ESP32 chip, you need to create a file *secrets.
 #define HOST <SERVER HOSTNAME (can be ip)>
 ```
 
-# 7. Credits
+# 8. Credits
 Thanks to Skyfield for an amazing library! Without them, this project would be a lot harder.
 Also thanks goes to Telegram for their free chat bot.
